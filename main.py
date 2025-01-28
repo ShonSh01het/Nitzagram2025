@@ -30,7 +30,7 @@ def main():
         # Display the background, presented Image, likes, comments, tags and location(on the Image)
         screen.fill(BLACK)
         screen.blit(background, (0, 0))
-        pygame.draw.rect(screen, (0, 0, 0), (2, 550, 310, 40), 1, 20)
+        pygame.draw.rect(screen, (0, 0, 0), (25, 550, 310, 40), 1, 20)
         # pygame.draw.rect(screen,(255,255,255), (26, 551, 308, 38))
         # Update display - without input update everything
         pygame.display.update()
