@@ -3,7 +3,6 @@ from helpers import screen
 from constants import *
 from helpers import from_text_to_array, center_text
 
-
 class Post:
     """
     A class used to represent post on Nitzagram
