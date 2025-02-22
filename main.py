@@ -1,7 +1,7 @@
 import pygame
 from helpers import screen
 from constants import *
-
+from helpers import from_text_to_array, center_text
 
 class Post:
     """
@@ -70,8 +70,9 @@ class Text_Post(Post):
         backgraund.fill(self.backgraund_color)
         screen.blit(backgraund, (POST_X_POS, POST_Y_POS))
         myfont = pygame.font.Font('fonts/Roboto_Condensed-Black.ttf', TEXT_POST_FONT_SIZE)
-        write_post = myfont.render(str(self.text), True, self.color, self.backgraund_color)
-        screen.blit(write_post, (POST_X_POS, POST_Y_POS))
+        for i in range(len(from_text_to_array(self.text))):
+            write_post = myfont.render(from_text_to_array(self.text)[i], True, self.color, self.backgraund_color)
+            screen.blit(write_post, center_text(len(self.text) / LINE_MAX_LENGTH, write_post, i))
 
 
 
