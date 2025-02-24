@@ -76,7 +76,7 @@ class Text_Post(Post):
         self.backgraund_color = backgraund_color
 
     def display(self):
-
+        #display
         backgraund = pygame.Surface((POST_WIDTH, POST_HEIGHT))
         backgraund.fill(self.backgraund_color)
         screen.blit(backgraund, (POST_X_POS, POST_Y_POS))
