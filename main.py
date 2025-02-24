@@ -1,5 +1,5 @@
 import pygame
-from helpers import screen
+from helpers import screen, draw_comment_text_box, read_comment_from_user
 from constants import *
 from helpers import from_text_to_array, center_text, mouse_in_button
 from buttons import like_button, comment_button, view_more_comments_button, click_post_button
@@ -36,12 +36,13 @@ class Post:
         COMMENT_X_POS = FIRST_COMMENT_X_POS
         COMMENT_Y_POS = FIRST_COMMENT_Y_POS
         if len(self.comments) >= NUM_OF_COMMENTS_TO_DISPLAY:
-            for comment in range(NUM_OF_COMMENTS_TO_DISPLAY):
+            #for comment in range(NUM_OF_COMMENTS_TO_DISPLAY):
+            for comment in range(len(self.comments) - NUM_OF_COMMENTS_TO_DISPLAY, len(self.comments)):
                 write_comment = myfont.render(str(self.comments[comment]), True, GREY)
                 screen.blit(write_comment, (COMMENT_X_POS, COMMENT_Y_POS))
                 COMMENT_Y_POS += 15
         else:
-            for comment in range(len(self.comments)):
+            for comment in range( len(self.comments)):
                 write_comment = myfont.render(str(self.comments[comment]), True, GREY)
                 screen.blit(write_comment, (COMMENT_X_POS, COMMENT_Y_POS))
                 COMMENT_Y_POS += 15
@@ -50,11 +51,10 @@ class Post:
         self.likes_counter = self.likes_counter + 1
         return
 
-
-
     def add_comment(self):
-        return
-
+        draw_comment_text_box()
+        comment = read_comment_from_user()
+        self.comments.append(comment)
 
 class Image_Post(Post):
     def __init__(self, image, user_name, location, likes_counter, comments, description):
@@ -76,7 +76,7 @@ class Text_Post(Post):
         self.backgraund_color = backgraund_color
 
     def display(self):
-        super().display()
+
         backgraund = pygame.Surface((POST_WIDTH, POST_HEIGHT))
         backgraund.fill(self.backgraund_color)
         screen.blit(backgraund, (POST_X_POS, POST_Y_POS))
@@ -84,7 +84,7 @@ class Text_Post(Post):
         for i in range(len(from_text_to_array(self.text))):
             write_post = myfont.render(from_text_to_array(self.text)[i], True, self.color, self.backgraund_color)
             screen.blit(write_post, center_text(len(self.text) / LINE_MAX_LENGTH, write_post, i))
-
+        super().display()
 
 def main():
     # Set up the game display, clock and headline
@@ -117,15 +117,17 @@ def main():
                     test.add_like()
                     if not like_status:
                         like_status = True
-
+                if mouse_in_button(comment_button, pygame.mouse.get_pos()):
+                    test.add_comment()
         # Display the background, presented Image, likes, comments, tags and location(on the Image)
         screen.fill(BLACK)
         screen.blit(background, (0, 0))
         test.display()
-        pygame.draw.rect(screen,(255,255,255), (26, 551, 308, 38))
+        #pygame.draw.rect(screen, (255, 255, 255), (26, 551, 308, 38))
         if like_status:
             heart_rect = heart_image.get_rect(
-                center=(LIKE_BUTTON_X_POS + 0.067 * WINDOW_WIDTH / 2 + 0.45, LIKE_BUTTON_Y_POS + 0.033 * WINDOW_HEIGHT /2 - 1))
+                center=(
+                LIKE_BUTTON_X_POS + 0.067 * WINDOW_WIDTH / 2 + 0.45, LIKE_BUTTON_Y_POS + 0.033 * WINDOW_HEIGHT / 2 - 1))
 
             # Draw the heart image on the screen
             screen.blit(heart_image, heart_rect)
